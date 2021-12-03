@@ -1,6 +1,7 @@
 package com.lib.mvc.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "profile")
@@ -17,9 +18,16 @@ public class Profile {
     @Column(name = "password")
     private String password;
 
+    @Transient
+    private String confirmPassword;
+
     @Column(name = "email")
     private String email;
 
+    @ManyToMany
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
     public Profile() {
     }
 
@@ -29,8 +37,24 @@ public class Profile {
         this.email = email;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     public int getUserId() {
         return userId;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public void setUserId(int userId) {
