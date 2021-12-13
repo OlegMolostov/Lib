@@ -27,7 +27,7 @@ Hello <b><c:out value="${pageContext.request.remoteUser}"/></b>
     <c:forEach var="tit" items="${allTitle}">
 
         <c:url var="InfoAuthor" value="/authorAllTitle">
-            <c:param name="autId" value="${tit.author.authorId}"/>
+            <c:param  name="autId" value="${tit.author.authorId}"/>
         </c:url>
         <tr>
             <td>${tit.title}</td>

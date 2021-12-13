@@ -1,5 +1,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+
 <%@ page language="java" contentType="text/html;charset=cp1251"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
@@ -38,40 +41,39 @@
 
     </c:if>
 
+
 </div>
 
 <div class="container">
-    <h2>${author.surname} ${author.name} ${author.secondname}</h2>
-    <br/>
-    <h4>${author.shortBiography}</h4>
-    <br/>
-    <table>
-        <tr>
-            <th>Title</th>
+    <h2>${book.title}</h2>
 
-            <th>Genre</th>
-            <th></th>
-        </tr>
+    <c:url  var="autInfo"  value="${contextPath}/autInfo" >
+        <c:param  name="aut" value="${book.author.authorId}"/>
+    </c:url>
 
-        <c:forEach var="tit" items="${author.titleOfBookList}">
+    <h4>
+        <input type="submit" value="${book.author.surname} ${book.author.name} ${book.author.secondname}"
+               onclick="window.location.href='${autInfo}'"/>
+    </h4>
+    <br>
 
-            <c:url  var="bookInfo"  value="${contextPath}/bookInfo" >
-                <c:param  name="book" value="${tit.titleOfBookId}"/>
-            </c:url>
+    <form id="AddBook" method="POST" action="${contextPath}/addBook">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input type="hidden" name="book" value="${book.titleOfBookId}">
 
-            <tr>
-                <td>
-                    <input type="text" value="${tit.title}"
-                           onclick="window.location.href='${bookInfo}'"/>
-                    &emsp;&emsp;
-                    &emsp;&emsp;</td>
 
-                <td>${tit.genre.typeGenre}&emsp;</td>
-            </tr>
 
-        </c:forEach>
+    Добавить в:
+    <select name="section"  style="height: 25px; width: 160px; color: black">
+        <option value="FavoriteBook">FavoriteBook</option>
+        <option value="WantToReadBook" >WantToReadBook</option>
+        <option value="ReadBook" >ReadBook</option>
+        <option value="BooksThatAreRead" >BooksThatAreRead</option>
+    </select>
 
-    </table>
+   <input type="submit" value="Add">
+
+    </form>
 </div>
 
 

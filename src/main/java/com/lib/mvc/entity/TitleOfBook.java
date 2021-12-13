@@ -1,8 +1,11 @@
 package com.lib.mvc.entity;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 
 @Entity
+@Proxy(lazy=false)
 @Table(name = "title_of_book")
 public class TitleOfBook {
 
@@ -14,7 +17,7 @@ public class TitleOfBook {
     @Column(name = "title")
     private String title;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "authors_id")
     private Author author;
 

@@ -2,6 +2,7 @@ package com.lib.mvc.entity;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.Proxy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Proxy(lazy=false)
 @Table(name = "authors")
 public class Author {
 
@@ -30,7 +32,7 @@ public class Author {
     private String shortBiography;
 
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author",fetch=FetchType.EAGER)
     private List<TitleOfBook> titleOfBookList;
 
 
@@ -91,5 +93,10 @@ public class Author {
 
     public void setShortBiography(String shortBiography) {
         this.shortBiography = shortBiography;
+    }
+
+    @Override
+    public String toString() {
+        return  ""+authorId ;
     }
 }

@@ -1,8 +1,11 @@
 package com.lib.mvc.entity;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 
 @Entity
+@Proxy(lazy=false)
 @Table(name = "genre")
 public class Genre {
 
