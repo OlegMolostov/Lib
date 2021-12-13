@@ -31,6 +31,7 @@ public class Profile {
     public Profile() {
     }
 
+
     public Profile(String name, String password, String email) {
         this.name = name;
         this.password = password;

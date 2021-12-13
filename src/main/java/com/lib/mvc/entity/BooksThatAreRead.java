@@ -1,8 +1,12 @@
 package com.lib.mvc.entity;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@Proxy(lazy=false)
 @Table(name = "books_that_are_read")
 public class BooksThatAreRead {
 
@@ -18,6 +22,8 @@ public class BooksThatAreRead {
     @ManyToOne
     @JoinColumn(name = "userid")
     private Profile profile;
+
+
 
     public BooksThatAreRead() {
     }
