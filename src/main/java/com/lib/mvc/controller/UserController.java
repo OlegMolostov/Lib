@@ -5,14 +5,21 @@ import com.lib.mvc.service.*;
 import com.lib.mvc.validator.UserValidator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Book;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -98,21 +105,21 @@ public class UserController {
 //        model.addAttribute("readsTitles",titleOfBookThatAreReadList);
 //        model.addAttribute("title",new TitleOfBook());
 
-        List<JS> genres=new ArrayList<>();
+        List<JS> genres = new ArrayList<>();
 
         List<TitleOfBook> allTitleOfBook = titleOfBookService.getAllBy();
-        for (int i = 0; i <allTitleOfBook.size() ; i++) {
-            boolean b=true;
-            for (int j = 0; j <genres.size() ; j++) {
-                if (genres.get(j).getName()==allTitleOfBook.get(i).getGenre().getTypeGenre()){
-                    genres.set(j,new JS(allTitleOfBook.get(i).getGenre().getTypeGenre(),genres.get(j).getCount()+1));
-                    b=false;
+        for (int i = 0; i < allTitleOfBook.size(); i++) {
+            boolean b = true;
+            for (int j = 0; j < genres.size(); j++) {
+                if (genres.get(j).getName() == allTitleOfBook.get(i).getGenre().getTypeGenre()) {
+                    genres.set(j, new JS(allTitleOfBook.get(i).getGenre().getTypeGenre(), genres.get(j).getCount() + 1));
+                    b = false;
                     break;
 
                 }
             }
-            if (b){
-                genres.add(new JS(allTitleOfBook.get(i).getGenre().getTypeGenre(),1));
+            if (b) {
+                genres.add(new JS(allTitleOfBook.get(i).getGenre().getTypeGenre(), 1));
             }
         }
 
@@ -125,7 +132,7 @@ public class UserController {
 //
 
 
-        model.addAttribute("sections",genres);
+        model.addAttribute("sections", genres);
 
 
         model.addAttribute("allTitle", allTitleOfBook);
@@ -140,7 +147,7 @@ public class UserController {
         Profile profile = userDetail.getProfile();
         List<BooksThatAreRead> allTitleOfBook = booksThatAreReadService.getAllByProfile(profile);
 
-        if (allTitleOfBook.size()>0) {
+        if (allTitleOfBook.size() > 0) {
             List<JS> genres = new ArrayList<>();
             for (int i = 0; i < allTitleOfBook.size(); i++) {
                 boolean b = true;
@@ -158,7 +165,6 @@ public class UserController {
             }
             model.addAttribute("sections", genres);
         }
-
 
 
         model.addAttribute("titleOfBookThatAreReadList", allTitleOfBook);
@@ -175,7 +181,7 @@ public class UserController {
 
         Profile profile = userDetail.getProfile();
         List<FavoriteBooks> allTitleOfBook = favoriteBooksService.getAllByProfile(profile);
-        if (allTitleOfBook.size()>0) {
+        if (allTitleOfBook.size() > 0) {
             List<JS> genres = new ArrayList<>();
             for (int i = 0; i < allTitleOfBook.size(); i++) {
                 boolean b = true;
@@ -195,7 +201,6 @@ public class UserController {
         }
 
 
-
         model.addAttribute("favoriteBooksList", allTitleOfBook);
         model.addAttribute("user", profile);
 
@@ -210,7 +215,7 @@ public class UserController {
 
         Profile profile = userDetail.getProfile();
         List<ReadBook> allTitleOfBook = readBookService.getAllByProfile(profile);
-        if (allTitleOfBook.size()>0) {
+        if (allTitleOfBook.size() > 0) {
             List<JS> genres = new ArrayList<>();
             for (int i = 0; i < allTitleOfBook.size(); i++) {
                 boolean b = true;
@@ -243,7 +248,7 @@ public class UserController {
 
         Profile profile = userDetail.getProfile();
         List<WantToRead> allTitleOfBook = wantToReadService.getAllByProfile(profile);
-        if (allTitleOfBook.size()>0) {
+        if (allTitleOfBook.size() > 0) {
             List<JS> genres = new ArrayList<>();
             for (int i = 0; i < allTitleOfBook.size(); i++) {
                 boolean b = true;
@@ -363,9 +368,35 @@ public class UserController {
         return "redirect:/welcome";
     }
 
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String admin(Model model) {
-        return "admin";
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String search(Model model,
+                         @RequestParam("title") String title,
+                         @RequestParam("author") String author,
+                         @RequestParam("genre") String genre)  {
+
+
+        List<TitleOfBook> allTitleOfBook = titleOfBookService.findByTitleContainsAndAuthorSurnameContainsAndGenreTypeGenreContains(title, author, genre);
+
+
+
+        System.out.println(title + "-" + author + "-" + genre);
+        System.out.println("\n");
+        System.out.println("\n");
+        System.out.println("\n");
+        System.out.println("\n");
+        System.out.println("\n");
+        System.out.println("\n");
+
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Profile profile = userDetail.getProfile();
+
+        for (TitleOfBook t : allTitleOfBook
+        ) {
+            System.out.println(t.getTitle());
+        }
+        model.addAttribute("allTitle", allTitleOfBook);
+        model.addAttribute("user", profile);
+        return "search";
     }
 
 

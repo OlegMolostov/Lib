@@ -30,4 +30,9 @@ public class TitleOfBookServiceImpl implements TitleOfBookService{
     public TitleOfBook getByTitleOfBookId(int id) {
         return titleOfBookDao.getByTitleOfBookId(id);
     }
+
+    @Override
+    public List<TitleOfBook> findByTitleContainsAndAuthorSurnameContainsAndGenreTypeGenreContains(String title, String surname, String genre) {
+        return titleOfBookDao.findByTitleContainsAndAuthorSurnameContainsAndGenreTypeGenreContains(title,surname,genre);
+    }
 }

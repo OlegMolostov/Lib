@@ -12,6 +12,8 @@ public interface TitleOfBookDao extends JpaRepository<TitleOfBook, Integer> {
      List<TitleOfBook> getAllByAuthorAuthorId(int id);
      TitleOfBook getByTitleOfBookId(int id);
 
+     List<TitleOfBook> findByTitleContainsAndAuthorSurnameContainsAndGenreTypeGenreContains(String title,String surname,String genre);
+
 
 
 }

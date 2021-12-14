@@ -43,6 +43,10 @@
 <div class="container">
     <h2>Books That Are Read</h2>
     <br>
+    <c:if test="${titleOfBookThatAreReadList.size()==0}">
+        <h5>Тут ещё ничего нет</h5>
+    </c:if>
+    <c:if test="${titleOfBookThatAreReadList.size()>0}">
     <table>
         <tr>
             <th>Title</th>
@@ -126,7 +130,7 @@
     </script>
 </head>
 <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
-
+</c:if>
 
 <%--////////////////////////////////////////////--%>
 

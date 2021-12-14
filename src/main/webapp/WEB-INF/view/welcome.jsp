@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html;charset=cp1251" %>
+
+<%--<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>--%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <!DOCTYPE html>
@@ -60,9 +62,19 @@
     <h3>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<a onclick="document.forms['WantToReadInfo'].submit()">WantToRead</a></h3>
 </form>
 
-
-
+<br/>
+<br/>
+<br/>
 <div class="container">
+<form action="/search" method="get" accept-charset="UTF-8">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+    &emsp;  Title:<input type="search" name="title">
+    Author:<input type="search" name="author"/>
+    Genre:<input type="search" name="genre">
+    <input type="submit" value="Search">
+</form>
+
     <h2>Books</h2>
     <br>
     <table>
